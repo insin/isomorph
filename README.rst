@@ -45,17 +45,17 @@ test which would naturally have a function name starting with "is".
 Type-checking functions
 -----------------------
 
-``is.Array``
-``is.Boolean``
-``is.Date``
-``is.Error``
-``is.Function``
-``is.Number``
-``is.Object``
-``is.RegExp``
-``is.String``
-
-   Determines if the given input is of the specified type.
+| ``is.Array``
+| ``is.Boolean``
+| ``is.Date``
+| ``is.Error``
+| ``is.Function``
+| ``is.Number``
+| ``is.Object``
+| ``is.RegExp``
+| ``is.String``
+|
+|  Determines if the given input is of the specified type.
 
 Content-checking functions
 --------------------------
