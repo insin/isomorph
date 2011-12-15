@@ -1,0 +1,1 @@
+QUnit.module('isomorph/func')
