@@ -69,8 +69,8 @@ func
 
 Utilities for wrking with functions.
 
-``bind(fn, content[, arg1, ...])``
-----------------------------------
+``func.bind(fn, context[, arg1, ...])``
+---------------------------------------
 
    Binds the given function to the given execution context (``this`` when
    the fnction is called) and optionally partially applies any additional
