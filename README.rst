@@ -16,13 +16,13 @@ Node.js::
 
    npm install isomorph
 
-Recommended usage for code intended to execute in both environments - this example::
+Recommended usage pattern for code intended to execute in both environments::
 
    ;(function(__global__, server) {
 
-   // When loaded in the browser, each file will create a namepsace object
+   // When loaded in the browser, each file will create a namespace object
    // with the same name is its filename, so required Node dependencies should
-   // do the same.
+   // do the same for compatibility.
    var is = server ? require('./is') : __global__.is
 
    // ...
