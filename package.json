@@ -1,7 +1,7 @@
 {
   "name": "isomorph",
   "description": "Shared utilities for browsers and Node.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Jonathan Buchanan <jonathan.buchanan@gmail.com> (https://github.com/insin)",
   "tags": ["shared", "isomorphic", "utilities", "browser"],
   "repository": {
