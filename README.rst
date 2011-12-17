@@ -55,14 +55,14 @@ Type-checking functions
 | ``is.RegExp``
 | ``is.String``
 
-   Determines if the given input is of the specified type.
+Determine if the given input is of the specified type.
 
 Content-checking functions
 --------------------------
 
 ``is.Empty``
 
-   Determines if the given Object has any enumerable properties.
+Determines if the given Object has any enumerable properties.
 
 func
 ====
@@ -72,9 +72,9 @@ Utilities for wrking with functions.
 ``func.bind(fn, context[, arg1, ...])``
 ---------------------------------------
 
-   Binds the given function to the given execution context (``this`` when
-   the fnction is called) and optionally partially applies any additional
-   arguments.
+Binds the given function to the given execution context (``this`` when
+the function is called) and optionally partially applies any additional
+arguments.
 
 object
 ======
@@ -82,16 +82,22 @@ object
 ``object.extend(dest[, src])``
 ------------------------------
 
-   The classic ``extend`` method -- copies own properties from ``src`` to
-   ``dest``, returning ``dest``.
+The classic ``extend`` method -- copies own properties from ``src`` to
+``dest``, returning ``dest``.
 
-   Does nothing if ``src`` is falsy, so it's safe to pass in an options
-   argument which is potentially ``undefined``::
+Does nothing if ``src`` is falsy, so it's safe to pass in an options
+argument which is potentially ``undefined``::
 
-      function quiz(kwargs) {
-        kwargs = Concur.cp({answer: 42, question: 'Meaning?'}, kwargs)
-        // ...
-      }
+   function quiz(kwargs) {
+     kwargs = Concur.cp({answer: 42, question: 'Meaning?'}, kwargs)
+     // ...
+   }
+
+`object.inherits(childConstructor, parentConstructor)``
+-------------------------------------------------------
+
+The classic ``inherits`` method -- puts ``parentConstructor``'s prototype in
+``childConstructor``'s prototype chain, returning ``childConstructor``.
 
 format
 ======
