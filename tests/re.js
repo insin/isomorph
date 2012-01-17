@@ -2,6 +2,8 @@ QUnit.module('isomorph/re')
 
 ;(function() {
 
+var re = isomorph.re
+
 var str = 'abc123def456'
 var nomatch = '!"£$%^&*()'
 

@@ -2,6 +2,8 @@ QUnit.module('isomorph/is')
 
 ;(function() {
 
+var is = isomorph.is
+
 var objs = {
   str1: 'str1'
 , str2: new String('str2')

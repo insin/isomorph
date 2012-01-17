@@ -1,5 +1,9 @@
 QUnit.module('isomorph/format')
 
+;(function() {
+
+var format = isomorph.format
+
 QUnit.test('format.format', function() {
   equal(format.format('nothing to do', 1, 2, 3), 'nothing to do')
   equal(format.format('%s', 1), '1')
@@ -19,4 +23,6 @@ QUnit.test('format.formatObj', function() {
   equal(format.formatObj('{one}', {one: 1}), '1')
   equal(format.formatObj('{one}{two}', {one: 1, two: 2}), '12')
   equal(format.formatObj('{one} {two} {three}', {one: 1, two: 2, three: 3}), '1 2 3')
+})
+
 })
