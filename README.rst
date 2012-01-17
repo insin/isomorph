@@ -9,39 +9,14 @@ Utilities which can be shared between browsers and `Node.js`_.
 
 Browsers:
 
-* `is.js`_
-* `func.js`_
-* `format.js`_ (dependent on `is.js`_)
-* `object.js`_
-* `re.js`_ (dependent on `is.js`_)
+* `isomorph.js`_
 
 Node.js::
 
    npm install isomorph
 
-The current usage pattern for code intended to execute in both environments,
-based on each module exporting to a same-named global namespace variable in
-browsers::
-
-   ;(function(__global__, server) {
-
-   // When loaded in the browser, each file will export a namespace object
-   // with the same name as its filename, so required Node dependencies should
-   // require into a same-named variable for compatibility.
-   var is = server ? require('isomorph/is') : __global__.is
-
-   // ...
-
-   })(this, !!(typeof module != 'undefined' && module.exports))
-
-This is ugly, and will be improved upon...
-
 .. _`Node.js`: http://nodejs.org
-.. _`is.js`: https://raw.github.com/insin/isomorph/master/is.js
-.. _`func.js`: https://raw.github.com/insin/isomorph/master/func.js
-.. _`format.js`: https://raw.github.com/insin/isomorph/master/format.js
-.. _`object.js`: https://raw.github.com/insin/isomorph/master/object.js
-.. _`re.js`:  https://raw.github.com/insin/isomorph/master/re.js
+.. _`isomorph.js`: https://raw.github.com/insin/isomorph/master/isomorph.js
 
 is
 ==
