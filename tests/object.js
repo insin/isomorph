@@ -12,4 +12,4 @@ QUnit.test('object.extend', function() {
   deepEqual(object.extend({a: 8, c: 8}, t), {a: 1, c:3, b: 2}, 'Overwrites existing properties')
 })
 
-})
+})()

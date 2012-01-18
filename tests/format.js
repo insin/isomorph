@@ -25,4 +25,4 @@ QUnit.test('format.formatObj', function() {
   equal(format.formatObj('{one} {two} {three}', {one: 1, two: 2, three: 3}), '1 2 3')
 })
 
-})
+})()

@@ -4,4 +4,4 @@ QUnit.module('isomorph/func')
 
 var func = isomorph.func
 
-})
+})()
