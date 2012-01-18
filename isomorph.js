@@ -1,3 +1,7 @@
+/**
+ * isomorph 0.1.1 - https://github.com/insin/isomorph
+ * MIT Licensed
+ */
 ;(function() {
   var modules = {}
   function require(name) {
@@ -10,6 +14,7 @@
     fn(module, exports, require)
     modules[name] = module.exports
   }
+
 require.define('./is', function(module, exports, require) {
 var toString = Object.prototype.toString
 
@@ -216,5 +221,6 @@ exports.format = require('./format')
 exports.re = require('./re')
 })
 
-  window['isomorph'] = require('isomorph')
-})()
+window['isomorph'] = require('isomorph')
+
+})();
