@@ -5,12 +5,12 @@ var buildumb = require('buildumb')
 buildumb.build({
   root: path.normalize(path.join(__dirname, '..'))
 , modules: {
-    './is': 'lib/is.js'
-  , './format': 'lib/format.js'
-  , './func': 'lib/func.js'
-  , './object': 'lib/object.js'
-  , './re': 'lib/re.js'
-  , 'isomorph': 'lib/isomorph.js'
+    'lib/is.js'       : './is'
+  , 'lib/format.js'   : './format'
+  , 'lib/func.js'     : './func'
+  , 'lib/object.js'   : './object'
+  , 'lib/re.js'       : './re'
+  , 'lib/isomorph.js' : 'isomorph'
   }
 , exports: {
     'isomorph': 'isomorph'
