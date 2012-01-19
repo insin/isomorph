@@ -3,6 +3,7 @@ var qunit = require('qunit')
 
 qunit.run({ code: {path: path.join(__dirname, '../lib/isomorph.js'), namespace: 'isomorph'}
           , tests: [ path.join(__dirname, 'is.js')
+                   , path.join(__dirname, 'array.js')
                    , path.join(__dirname, 'format.js')
                    , path.join(__dirname, 'func.js')
                    , path.join(__dirname, 'object.js')

@@ -6,6 +6,7 @@ buildumb.build({
   root: path.normalize(path.join(__dirname, '..'))
 , modules: {
     'lib/is.js'       : './is'
+  , 'lib/array.js'    : './array'
   , 'lib/format.js'   : './format'
   , 'lib/func.js'     : './func'
   , 'lib/object.js'   : './object'

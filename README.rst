@@ -46,10 +46,20 @@ Content-checking functions
 
 Determines if the given Object has any enumerable properties.
 
+array
+=====
+
+Utilities for working with Arrays.
+
+``flatten(arr)``
+----------------
+
+Flattens the given Array in place (and returns it, for chaining).
+
 func
 ====
 
-Utilities for working with functions.
+Utilities for working with Functions.
 
 ``func.bind(fn, context[, arg1, ...])``
 ---------------------------------------
@@ -67,6 +77,8 @@ The following properties are available on the bound function:
 
 object
 ======
+
+Utilities for working with Objects.
 
 ``object.extend(dest[, src1, ...])``
 ------------------------------------
@@ -129,6 +141,8 @@ and adding it to the resulting Object as a property whose value is ``true``::
 format
 ======
 
+Formatting utilities.
+
 ``format.format(str[, r1, ...])``
 ---------------------------------
 
@@ -156,6 +170,8 @@ To output a literal '``{varName}'``, double up the opening brace::
 
 re
 ==
+
+Regular Expression utilities.
 
 ``re.findAll(regex, str[, flags])``
 -----------------------------------
