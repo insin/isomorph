@@ -1,5 +1,5 @@
 /**
- * isomorph 0.1.1 - https://github.com/insin/isomorph
+ * isomorph 0.1.2 - https://github.com/insin/isomorph
  * MIT Licensed
  */
 ;(function() {
@@ -7,15 +7,22 @@
   function require(name) {
     return modules[name]
   }
-  require.define = function(name, fn) {
+  require.define = function(rs, fn) {
     var module = {}
       , exports = {}
     module.exports = exports
     fn(module, exports, require)
-    modules[name] = module.exports
+    if (Object.prototype.toString.call(rs) == '[object Array]') {
+      for (var i = 0, l = rs.length; i < l; i++) {
+        modules[rs[i]] = module.exports
+      }
+    }
+    else {
+      modules[rs] = module.exports
+    }
   }
 
-require.define('./is', function(module, exports, require) {
+require.define("./is", function(module, exports, require) {
 var toString = Object.prototype.toString
 
 // Type checks
@@ -80,11 +87,11 @@ module.exports = {
 }
 })
 
-require.define('./format', function(module, exports, require) {
+require.define("./format", function(module, exports, require) {
 var is = require('./is')
   , slice = Array.prototype.slice
-  , formatRegExp = /%s/g
-  , formatObjRegExp = /{(\w+)}/g
+  , formatRegExp = /%[%s]/g
+  , formatObjRegExp = /({{?)(\w+)}/g
 
 /**
  * Replaces %s placeholders in a string with positional arguments.
@@ -98,14 +105,14 @@ function format(s) {
  */
 function formatArr(s, a) {
   var i = 0
-  return s.replace(formatRegExp, function() { return a[i++] })
+  return s.replace(formatRegExp, function(m) { return m == '%%' ? '%' : a[i++] })
 }
 
 /**
- * Replaces {prop} placeholders in a string with object properties.
+ * Replaces {propertyName} placeholders in a string with object properties.
  */
 function formatObj(s, o) {
-  return s.replace(formatObjRegExp, function(m, p) { return o[p] })
+  return s.replace(formatObjRegExp, function(m, b, p) { return b.length == 2 ? m.slice(1) : o[p] })
 }
 
 module.exports = {
@@ -115,26 +122,21 @@ module.exports = {
 }
 })
 
-require.define('./func', function(module, exports, require) {
+require.define("./func", function(module, exports, require) {
 var slice = Array.prototype.slice
 
 /**
- * Binds a function with a calling context and (optionally) some partially
- * applied arguments.
+ * Binds a function with a call context and (optionally) some partially applied
+ * arguments.
  */
 function bind(fn, ctx) {
-  var partial = null
-  if (arguments.length > 2) {
-    partial = slice.call(arguments, 2)
-  }
+  var partial = (arguments.length > 2 ? slice.call(arguments, 2) : null)
   var f = function() {
-    if (partial) {
-      return fn.apply(ctx, partial.concat(slice.call(arguments)))
-    }
-    return fn.apply(ctx, arguments)
+    var args = (partial ? partial.concat(slice.call(arguments)) : arguments)
+    return fn.apply(ctx, args)
   }
-  f.func = fn
-  f.boundTo = ctx
+  f.__func__ = fn
+  f.__context__ = ctx
   return f
 }
 
@@ -143,15 +145,18 @@ module.exports = {
 }
 })
 
-require.define('./object', function(module, exports, require) {
+require.define("./object", function(module, exports, require) {
 /**
- * Copies own properties from one object to another.
+ * Copies own properties from any given objects to a destination object.
  */
-function extend(dest, src) {
-  if (src) {
-    for (var prop in src) {
-      if (src.hasOwnProperty(prop)) {
-        dest[prop] = src[prop]
+function extend(dest) {
+  for (var i = 1, l = arguments.length, src; i < l; i++) {
+    src = arguments[i]
+    if (src) {
+      for (var prop in src) {
+        if (src.hasOwnProperty(prop)) {
+          dest[prop] = src[prop]
+        }
       }
     }
   }
@@ -170,13 +175,52 @@ function inherits(childConstructor, parentConstructor) {
   return childConstructor
 }
 
+/**
+ * Creates an Array of [property, value] pairs from an Object.
+ */
+function items(obj) {
+  var items = []
+  for (var prop in obj) {
+    if (obj.hasOwnProperty(prop)) {
+      items.push([prop, obj[prop]])
+    }
+  }
+  return items
+}
+
+/**
+ * Creates an Object from an Array of [property, value] pairs.
+ */
+function fromItems(items) {
+  var obj = {}
+  for (var i = 0, l = items.length, item; i < l; i++) {
+    item = items[i]
+    obj[item[0]] = item[1]
+  }
+  return obj
+}
+
+/**
+ * Creates a lookup Object from an Array, coercing each item to a String.
+ */
+function lookup(arr) {
+  var obj = {}
+  for (var i = 0, l = arr.length; i < l; i++) {
+    obj[''+arr[i]] = true
+  }
+  return obj
+}
+
 module.exports = {
   extend: extend
 , inherits: inherits
+, items: items
+, fromItems: fromItems
+, lookup: lookup
 }
 })
 
-require.define('./re', function(module, exports, require) {
+require.define("./re", function(module, exports, require) {
 var is = require('./is')
 
 /**
@@ -211,7 +255,7 @@ module.exports = {
 }
 })
 
-require.define('isomorph', function(module, exports, require) {
+require.define("isomorph", function(module, exports, require) {
 exports.version = '0.0.3'
 
 exports.is = require('./is')

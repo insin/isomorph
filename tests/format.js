@@ -10,6 +10,7 @@ QUnit.test('format.format', function() {
   equal(format.format('%s', 1), '1')
   equal(format.format('%s%%%s', 1, 2), '1%2')
   equal(format.format('%s %s %s', 1, 2, 3), '1 2 3')
+  equal(format.format('%% Complete: %s%%', 95), '% Complete: 95%', 'README example')
 })
 
 QUnit.test('format.formatArr', function() {
@@ -26,6 +27,7 @@ QUnit.test('format.formatObj', function() {
   equal(format.formatObj('{one}', {one: 1}), '1')
   equal(format.formatObj('{one}{{one}{two}', {one: 1, two: 2}), '1{one}2')
   equal(format.formatObj('{one} {two} {three}', {one: 1, two: 2, three: 3}), '1 2 3')
+  equal(format.formatObj('{{foo}={foo}, {{bar}={bar}', {foo: 1, bar: 2}), '{foo}=1, {bar}=2', 'README example')
 })
 
 })()

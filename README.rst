@@ -37,7 +37,7 @@ Type-checking functions
 | ``is.RegExp``,
 | ``is.String``
 
-Determine if the given input is of the specified type.
+Determines if the given input is of the specified type.
 
 Content-checking functions
 --------------------------
@@ -49,7 +49,7 @@ Determines if the given Object has any enumerable properties.
 func
 ====
 
-Utilities for wrking with functions.
+Utilities for working with functions.
 
 ``func.bind(fn, context[, arg1, ...])``
 ---------------------------------------
@@ -58,28 +58,73 @@ Binds the given function to the given execution context (``this`` when
 the function is called) and optionally partially applies any additional
 arguments.
 
+The following properties are available on the bound function:
+
+``__func__``
+   The original function which is being bound.
+``__context__``
+   The context to which the function is bound.
+
 object
 ======
 
-``object.extend(dest[, src])``
-------------------------------
+``object.extend(dest[, src1, ...])``
+------------------------------------
 
-The classic ``extend`` method -- copies own properties from ``src`` to
+The classic ``extend`` method -- copies own properties from ``src`` arguments to
 ``dest``, returning ``dest``.
 
-Does nothing if ``src`` is falsy, so it's safe to pass in an options
-argument which is potentially ``undefined``::
+Does nothing for any ``src`` arguments which are falsy, so it's safe to pass in
+an options argument which is potentially ``undefined``, e.g.::
 
    function quiz(kwargs) {
-     kwargs = Concur.cp({answer: 42, question: 'Meaning?'}, kwargs)
+     kwargs = object.extend({answer: 42, question: 'Meaning?'}, kwargs)
      // ...
    }
 
-`object.inherits(childConstructor, parentConstructor)``
--------------------------------------------------------
+``object.inherits(childConstructor, parentConstructor)``
+--------------------------------------------------------
 
 The classic ``inherits`` method -- puts ``parentConstructor``'s prototype in
 ``childConstructor``'s prototype chain, returning ``childConstructor``.
+
+``object.items(obj)``
+---------------------
+
+Creates an Array of ``[property, value]`` pairs from an Object.
+
+``object.fromItems(items)``
+---------------------------
+
+Creates an Object from an Array of ``[property, value]`` pairs.
+
+::
+
+   function sortedFieldObj(fieldObj) {
+      var fields = object.items(fieldObj)
+      fields.sort(function(a, b) {
+        return a[1].creationCounter - b[1].creationCounter
+      })
+      return object.fromItems(fields)
+   }
+
+``object.lookup(arr)``
+----------------------
+
+Creates a lookup Object from an Array, coercing each item in the Array to String
+and adding it to the resulting Object as a property whose value is ``true``::
+
+   var ALLOWED_TAGS = ['div', 'span', 'h1']
+     , TAG_LOOKUP = object.lookup(ALLOWED_TAGS)
+
+   function elementify(tagName) {
+      if (TAG_LOOKUP[tagName]) {
+         console.log(tagName + ' is valid')
+      }
+      else {
+         console.log(tagName + ' is not allowed')
+      }
+   }
 
 format
 ======
@@ -95,17 +140,25 @@ Replaces ``"%s"`` placeholders in the given string with positional arguments.
 Replaces ``"%s"`` placeholders in the given string with arguments passed as
 an Array.
 
+To output a literal ``'%'``, escape percentage signs by doubling them up::
+
+   format.format('%% Complete: %s%%', 95) // '% Complete: 95%'
+
 ``format.formatObj(str, obj)``
 ------------------------------
 
 Replaces ``"{varName}"`` placeholders in the given string with same-named
 properties from a given object.
 
+To output a literal '``{varName}'``, double up the opening brace::
+
+   format.formatObj('{{foo}={foo}, {{bar}={bar}', {foo: 1, bar: 2}) // '{foo}=1, {bar}=2'
+
 re
 ==
 
 ``re.findAll(regex, str[, flags])``
-------------------------------------
+-----------------------------------
 
 Uses a regular expression (given as a String or a RegExp object) to
 find and return matches in the given String, in the vein of Python's
