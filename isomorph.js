@@ -1,5 +1,5 @@
 /**
- * isomorph 0.1.2 - https://github.com/insin/isomorph
+ * isomorph 0.1.3 - https://github.com/insin/isomorph
  * MIT Licensed
  */
 ;(function() {
@@ -256,7 +256,7 @@ module.exports = {
 })
 
 require.define("isomorph", function(module, exports, require) {
-exports.version = '0.0.3'
+exports.version = '0.1.3'
 
 exports.is = require('./is')
 exports.func = require('./func')
