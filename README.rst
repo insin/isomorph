@@ -189,6 +189,21 @@ to specify the flags to be used when compiling the RegExp.
 
 .. _`re.findall`: http://docs.python.org/library/re.html#re.findall
 
+querystring
+===========
+
+``parse(str)``
+--------------
+
+Creates an Object from a query string, providing values for names which are
+present more than once as an Array.
+
+``stringify(obj)``
+------------------
+
+Creates a query string from an Object, expecting names with multiple values
+to be specified as an Array.
+
 MIT License
 ===========
 
