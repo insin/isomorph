@@ -5,7 +5,8 @@ Isomorph |travis_status|
 .. |travis_status| image:: https://secure.travis-ci.org/insin/isomorph.png
    :target: http://travis-ci.org/insin/isomorph
 
-Utilities which can be shared between browsers and `Node.js`_.
+Utilities extracted from my dual-sided projects, which can be shared between
+browsers and `Node.js`_.
 
 Browsers:
 
@@ -21,8 +22,8 @@ Node.js::
 is
 ==
 
-Utilities for type-checking and more - anything which is a generic, reusable
-test which would naturally have a function name starting with "is".
+Type-checking and more - anything which is a generic, reusable test which would
+naturally have a function name starting with "is".
 
 Type-checking functions
 -----------------------
@@ -65,13 +66,12 @@ Utilities for working with Functions.
 ---------------------------------------
 
 Binds the given function to the given execution context (``this`` when
-the function is called) and optionally partially applies any additional
-arguments.
+the function is called) and partially applies any additional arguments given.
 
-The following properties are available on the bound function:
+The following properties are available on the binding function:
 
 ``__func__``
-   The original function which is being bound.
+   The function which is bound.
 ``__context__``
    The context to which the function is bound.
 
@@ -124,7 +124,7 @@ Creates an Object from an Array of ``[property, value]`` pairs.
 ----------------------
 
 Creates a lookup Object from an Array, coercing each item in the Array to String
-and adding it to the resulting Object as a property whose value is ``true``::
+and adding it to a lookup Object as a property whose value is ``true``::
 
    var ALLOWED_TAGS = ['div', 'span', 'h1']
      , TAG_LOOKUP = object.lookup(ALLOWED_TAGS)
@@ -191,6 +191,8 @@ to specify the flags to be used when compiling the RegExp.
 
 querystring
 ===========
+
+Utilities for working with query strings.
 
 ``parse(str)``
 --------------
