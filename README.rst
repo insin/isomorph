@@ -214,6 +214,24 @@ present more than once as an Array.
 Creates a query string from an Object, expecting names with multiple values
 to be specified as an Array.
 
+copy
+====
+
+Utilites for creating copies of objects. This implementation is from Oran
+Looney's `Deep Copy in JavaScript`_ and exposes the same interface.
+
+.. _`Deep Copy in JavaScript`: http://oranlooney.com/deep-copy-javascript/
+
+``copy(obj)``
+-------------
+
+Creates a shallow copy of an object.
+
+``deepCopy()``
+--------------
+
+Creates a deep copy of an object.
+
 MIT License
 ===========
 

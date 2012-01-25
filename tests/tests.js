@@ -9,5 +9,6 @@ qunit.run({ code: {path: path.join(__dirname, '../lib/isomorph.js'), namespace: 
                    , path.join(__dirname, 'object.js')
                    , path.join(__dirname, 're.js')
                    , path.join(__dirname, 'querystring.js')
+                   , path.join(__dirname, 'copy.js')
                    ]
           })

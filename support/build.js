@@ -12,6 +12,7 @@ buildumb.build({
   , 'lib/object.js'      : './object'
   , 'lib/re.js'          : './re'
   , 'lib/querystring.js' : './querystring'
+  , 'lib/copy.js'        : './copy'
   , 'lib/isomorph.js'    : 'isomorph'
   }
 , exports: {
