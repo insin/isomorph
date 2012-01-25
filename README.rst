@@ -80,6 +80,14 @@ object
 
 Utilities for working with Objects.
 
+``object.hasOwn(obj, propertyName)``
+------------------------------------
+
+Callbound version of ``Object.prototype.hasOwnProperty()`` -- use to avoid the
+"hasOwnProperty trap", as described in `An Object is not a Hash`_.
+
+.. _`An Object is not a Hash`: http://www.devthought.com/2012/01/18/an-object-is-not-a-hash/
+
 ``object.extend(dest[, src1, ...])``
 ------------------------------------
 

@@ -4,6 +4,12 @@ QUnit.module('isomorph/object')
 
 var object = isomorph.object
 
+QUnit.test('object.hasOwn', function() {
+  var o = {someProp: true, hasOwnProperty: true}
+  ok(object.hasOwn(o, 'someProp'), 'Detects standard named property')
+  ok(object.hasOwn(o, 'hasOwnProperty'), 'Avoids the hasOwnProperty trap')
+})
+
 QUnit.test('object.extend (single)', function() {
   var t = {a: 1, b:2, c: 3}
   deepEqual(object.extend({}, t), t, 'Object copied to empty Object')
