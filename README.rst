@@ -227,8 +227,8 @@ Looney's `Deep Copy in JavaScript`_ and exposes the same interface.
 
 Creates a shallow copy of an object.
 
-``deepCopy()``
---------------
+``deepCopy(obj)``
+-----------------
 
 Creates a deep copy of an object.
 
