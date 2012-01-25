@@ -1,5 +1,5 @@
 /**
- * isomorph 0.1.5 - https://github.com/insin/isomorph
+ * isomorph 0.1.6 - https://github.com/insin/isomorph
  * MIT Licensed
  */
 ;(function() {
@@ -178,6 +178,12 @@ module.exports = {
 
 require.define("./object", function(module, exports, require) {
 /**
+ * Callbound version of Object.prototype.hasOwnProperty(), ready to be called
+ * with an object and property name.
+ */
+var hasOwn = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
+
+/**
  * Copies own properties from any given objects to a destination object.
  */
 function extend(dest) {
@@ -185,7 +191,7 @@ function extend(dest) {
     src = arguments[i]
     if (src) {
       for (var prop in src) {
-        if (src.hasOwnProperty(prop)) {
+        if (hasOwn(src, prop)) {
           dest[prop] = src[prop]
         }
       }
@@ -212,7 +218,7 @@ function inherits(childConstructor, parentConstructor) {
 function items(obj) {
   var items = []
   for (var prop in obj) {
-    if (obj.hasOwnProperty(prop)) {
+    if (hasOwn(obj, prop)) {
       items.push([prop, obj[prop]])
     }
   }
@@ -243,7 +249,8 @@ function lookup(arr) {
 }
 
 module.exports = {
-  extend: extend
+  hasOwn: hasOwn
+, extend: extend
 , inherits: inherits
 , items: items
 , fromItems: fromItems
