@@ -13,6 +13,7 @@ buildumb.build({
   , 'lib/re.js'          : './re'
   , 'lib/querystring.js' : './querystring'
   , 'lib/copy.js'        : './copy'
+  , 'lib/time.js'        : './time'
   , 'lib/isomorph.js'    : 'isomorph'
   }
 , exports: {
