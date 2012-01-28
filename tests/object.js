@@ -44,4 +44,10 @@ QUnit.test('object.lookup', function() {
   deepEqual(object.lookup([]), {}, 'Safe to pass an empty Array')
 })
 
+QUnit.test('object.get', function() {
+  var o = {prop: null}
+  strictEqual(object.get(o, 'prop', 123), null, 'Retrieves properties value when property exist')
+  strictEqual(object.get(o, 'notProp', 123), 123, 'Returns default when property does not exist')
+})
+
 })()

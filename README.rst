@@ -146,6 +146,12 @@ and adding it to a lookup Object as a property whose value is ``true``::
       }
    }
 
+``object.get(obj, prop, default)``
+----------------------------------
+
+If the object has an own property with the given name, returns its value,
+otherwise returns the given default.
+
 format
 ======
 
