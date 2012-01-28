@@ -1,6 +1,10 @@
 var qunit = require('qunit')
   , path = require('path')
 
+qunit.options.deps = [
+  {path: path.join(__dirname, 'customAsserts.js')},
+]
+
 qunit.run({ code: {path: path.join(__dirname, '../lib/isomorph.js'), namespace: 'isomorph'}
           , tests: [ path.join(__dirname, 'is.js')
                    , path.join(__dirname, 'array.js')
@@ -10,5 +14,6 @@ qunit.run({ code: {path: path.join(__dirname, '../lib/isomorph.js'), namespace: 
                    , path.join(__dirname, 're.js')
                    , path.join(__dirname, 'querystring.js')
                    , path.join(__dirname, 'copy.js')
+                   , path.join(__dirname, 'time.js')
                    ]
           })

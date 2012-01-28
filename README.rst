@@ -238,6 +238,91 @@ Creates a shallow copy of an object.
 
 Creates a deep copy of an object.
 
+time
+====
+
+Utilities for formatting and parsing times and dates.
+
+Formatting Directives
+---------------------
+
+The following formatting directives are supported by ``time.strftime`` and
+``time.strptime``:
+
+=========  =====================================================
+Directive  Meaning
+=========  =====================================================
+``%b``     Locale's abbreviated month name
+``%B``     Locale's full month name
+``%d``     Day of the month as a decimal number [01,31]
+``%H``     Hour (24-hour clock) as a decimal number [00,23]
+``%I``     Hour (12-hour clock) as a decimal number [00,12]
+``%m``     Month as a decimal number [01,12]
+``%M``     Minute as a decimal number [00,59]
+``%p``     Locale's equivalent of either AM or PM (only with %I)
+``%S``     Second as a decimal number [00,59]
+``%y``     Year without century as a decimal number [00,99]
+``%Y``     Year with century as a decimal number
+``%%``     A literal ``%`` character
+=========  =====================================================
+
+``time.strftime(date, format[, locale])``
+-----------------------------------------
+
+A partial implementation of ``strftime``, which formats a Date according to a
+format string. An Error will be thrown if an invalid format string is given.
+
+``time.strpdate(string, format[, locale])``
+-------------------------------------------
+
+Parses time details from a string, based on a format string, returning a Date.
+
+This is a convenience wrapper around ``time.strptime``:
+
+``time.strptime(string, format[, locale])``
+-------------------------------------------
+
+A partial implementation of ``strptime``, which parses time details from a
+string, based on a format string.
+
+Returns an Array of numbers, each corresponding to a datetime field:
+
+=====  ==========  ==================
+Index  Represents  Values
+=====  ==========  ==================
+``0``  Year        (for example, 2003
+``1``  Month       range [1,12]
+``2``  Day         range [1,31]
+``3``  Hour        range [0,23]
+``4``  Minute      range [0,59]
+``5``  Second      range [0,59]
+=====  ==========  ==================
+
+This implementation largely takes its cue from the documentation for Python's
+``time`` module, as documented at http://docs.python.org/lib/module-time.html
+with the exception of seconds formatting, which is restricted to the range
+[00,59] rather than [00,61].
+
+Locales
+-------
+
+The ``time`` module has basic support for using locales when parsing and
+formatting dates.
+
+``time.defaultLocale``
+   The code for the default locale - defaults to ``'en'``.
+
+``time.locales``
+   An object defining locale details, with locale codes as its properties.
+   Only contains the locale definition for ``'en'`` by default.
+
+``time.getLocale(code)``
+   Retrieves the locale with the given code, falling back to just the
+   language code and finally to the default locale if a locale can't be found.
+
+   Locale codes can consist of a language code (e.g. ``'en'``) or a language
+   and region code (e.g. ``'en-GB'``).
+
 MIT License
 ===========
 
