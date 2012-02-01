@@ -1,19 +1,22 @@
-var qunit = require('qunit')
-  , path = require('path')
+var path = require('path')
 
-qunit.options.deps = [
-  {path: path.join(__dirname, 'customAsserts.js')},
-]
+var qqunit = require('qqunit')
+  , object = require('../lib/object')
 
-qunit.run({ code: {path: path.join(__dirname, '../lib/isomorph.js'), namespace: 'isomorph'}
-          , tests: [ path.join(__dirname, 'is.js')
-                   , path.join(__dirname, 'array.js')
-                   , path.join(__dirname, 'format.js')
-                   , path.join(__dirname, 'func.js')
-                   , path.join(__dirname, 'object.js')
-                   , path.join(__dirname, 're.js')
-                   , path.join(__dirname, 'querystring.js')
-                   , path.join(__dirname, 'copy.js')
-                   , path.join(__dirname, 'time.js')
-                   ]
-          })
+object.extend(global, require('./customAsserts'))
+global.isomorph = require('../lib/isomorph')
+
+var tests = [ 'is.js'
+            , 'array.js'
+            , 'format.js'
+            , 'func.js'
+            , 'object.js'
+            , 're.js'
+            , 'querystring.js'
+            , 'copy.js'
+            , 'time.js'
+            ].map(function(t) { return path.join(__dirname, t) })
+
+qqunit.Runner.run(tests, function(stats) {
+  process.exit(stats.failed)
+})

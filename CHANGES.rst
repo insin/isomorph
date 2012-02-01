@@ -1,7 +1,7 @@
 0.1.7 / 2012-01-28
 ==================
 
-* Added time module, with``time.strftime``, ``time.strpdate``, ``time.strftime``
+* Added time module, with ``time.strftime``, ``time.strpdate``, ``time.strftime``
   and some basic locale support.
 * Added copy module, with ``copy.copy()`` and ``copy.deepCopy()``
 * Added ``object.get()``
