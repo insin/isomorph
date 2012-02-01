@@ -1,5 +1,5 @@
 /**
- * isomorph 0.1.7 - https://github.com/insin/isomorph
+ * isomorph 0.1.8 - https://github.com/insin/isomorph
  * MIT Licensed
  */
 ;(function() {
@@ -181,7 +181,10 @@ require.define("./object", function(module, exports, require) {
  * Callbound version of Object.prototype.hasOwnProperty(), ready to be called
  * with an object and property name.
  */
-var hasOwn = Function.prototype.call.bind(Object.prototype.hasOwnProperty)
+var hasOwn = (function() {
+  var hasOwnProperty = Object.prototype.hasOwnProperty
+  return function(obj, prop) { return hasOwnProperty.call(obj, prop) }
+})()
 
 /**
  * Copies own properties from any given objects to a destination object.

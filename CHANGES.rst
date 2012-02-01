@@ -1,3 +1,9 @@
+0.1.8 / 2012-02-01
+==================
+
+* Fixed ``object.hasOwn()`` in IE 7/8, where ``Function.prototype.call.bind`` is
+  Not A Thing.
+
 0.1.7 / 2012-01-28
 ==================
 
