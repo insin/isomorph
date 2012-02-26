@@ -1,6 +1,6 @@
-QUnit.module('isomorph/is')
+QUnit.module('isomorph/lib/is')
 
-;(function() {
+void function() {
 
 var is = isomorph.is
 
@@ -56,4 +56,4 @@ QUnit.test('is.Empty', function() {
   ok(!is.Empty({a: 1}))
 })
 
-})()
+}()

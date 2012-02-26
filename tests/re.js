@@ -1,6 +1,6 @@
-QUnit.module('isomorph/re')
+QUnit.module('isomorph/lib/re')
 
-;(function() {
+void function() {
 
 var re = isomorph.re
 
@@ -22,4 +22,4 @@ QUnit.test('re.findAll', 12, function() {
   deepEqual(re.findAll('[a-z](\\d)(\\d)', nomatch, 'g'), [])
 })
 
-})()
+}()

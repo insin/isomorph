@@ -1,6 +1,6 @@
-QUnit.module('isomorph/func')
+QUnit.module('isomorph/lib/func')
 
-;(function() {
+void function() {
 
 var func = isomorph.func
 
@@ -18,4 +18,4 @@ QUnit.test('func.bind', function() {
   strictEqual(bound(3, 5), 'test,1,3,5', 'Context used, arguments partially applied and arguments passed when called')
 })
 
-})()
+}()

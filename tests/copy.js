@@ -1,6 +1,6 @@
-QUnit.module('isomorph/copy')
+QUnit.module('isomorph/lib/copy')
 
-;(function() {
+void function() {
 
 var copy = isomorph.copy
 
@@ -21,4 +21,4 @@ QUnit.test('copy.deepCopy', function() {
   deepEqual(c, {a: [{p: '789'}, {p: '456'}, {p: 'abc'}]}, 'Copy has original properties plus changes')
 })
 
-})()
+}()

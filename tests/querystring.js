@@ -1,6 +1,6 @@
-QUnit.module('isomorph/querystring')
+QUnit.module('isomorph/lib/querystring')
 
-;(function() {
+void function() {
 
 var querystring = isomorph.querystring
 
@@ -20,4 +20,4 @@ QUnit.test('querystring.stringify', function() {
   equal(querystring.stringify({foo: 'bar bar bar'}), 'foo=bar%20bar%20bar')
 })
 
-})()
+}()
