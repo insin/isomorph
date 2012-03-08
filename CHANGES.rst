@@ -1,3 +1,11 @@
+0.1.9 / 2012-03-08
+==================
+
+* Extracted third-party functions from `newforms`_ for reuse across projects:
+
+  * ``url.parseUri()``
+  * ``url.makeUri()``
+
 0.1.8 / 2012-02-01
 ==================
 

@@ -14,6 +14,7 @@ buildumb.build({
   , 'lib/querystring.js' : './querystring'
   , 'lib/copy.js'        : './copy'
   , 'lib/time.js'        : './time'
+  , 'lib/url.js'         : './url'
   , 'lib/isomorph.js'    : 'isomorph'
   }
 , exports: {

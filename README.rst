@@ -323,6 +323,33 @@ formatting dates.
    Locale codes can consist of a language code (e.g. ``'en'``) or a language
    and region code (e.g. ``'en-GB'``).
 
+url
+===
+
+Utilities for working with URLs.
+
+``url.parseUri(url)``
+---------------------
+
+Splits any well-formed URI into its parts -- from http://blog.stevenlevithan.com/archives/parseuri.
+
+::
+
+   parseUri 1.2.2
+   (c) Steven Levithan <stevenlevithan.com>
+   MIT License
+
+``url.makeUri(obj)``
+--------------------
+
+Creates a URI from an object specification -- from https://gist.github.com/1121696.
+
+::
+
+   makeURI 1.2.2 - create a URI from an object specification
+   (c) Niall Smart <niallsmart.com>
+   MIT License
+
 MIT License
 ===========
 
