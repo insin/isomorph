@@ -1,6 +1,6 @@
-QUnit.module('isomorph/array')
+QUnit.module('isomorph/lib/array')
 
-;(function() {
+void function() {
 
 var array = isomorph.array
 
@@ -22,4 +22,4 @@ QUnit.test('array.flatten', function() {
   deepEqual([], [], 'Safe to call on an empty Array')
 })
 
-})()
+}()

@@ -1,6 +1,6 @@
-QUnit.module('isomorph/format')
+QUnit.module('isomorph/lib/format')
 
-;(function() {
+void function() {
 
 var format = isomorph.format
 
@@ -30,4 +30,4 @@ QUnit.test('format.formatObj', function() {
   equal(format.formatObj('{{foo}={foo}, {{bar}={bar}', {foo: 1, bar: 2}), '{foo}=1, {bar}=2', 'README example')
 })
 
-})()
+}()

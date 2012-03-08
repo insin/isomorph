@@ -1,6 +1,6 @@
-QUnit.module('isomorph/object')
+QUnit.module('isomorph/lib/object')
 
-;(function() {
+void function() {
 
 var object = isomorph.object
 
@@ -50,4 +50,4 @@ QUnit.test('object.get', function() {
   strictEqual(object.get(o, 'notProp', 123), 123, 'Returns default when property does not exist')
 })
 
-})()
+}()

@@ -1,6 +1,6 @@
-QUnit.module('isomorph/time')
+QUnit.module('isomorph/lib/time')
 
-;(function() {
+void function() {
 
 var time = isomorph.time
 
@@ -146,4 +146,4 @@ QUnit.test('time.strftime', 6, function() {
   equal(time.strftime(new Date(2006, 9, 25, 14, 30, 59), '%w'), '3')
 })
 
-})()
+}()
