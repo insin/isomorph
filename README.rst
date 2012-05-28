@@ -182,6 +182,23 @@ To output a literal '``{varName}'``, double up the opening brace::
 
    format.formatObj('{{foo}={foo}, {{bar}={bar}', {foo: 1, bar: 2}) // '{foo}=1, {bar}=2'
 
+``format.fileSize(bytes[, threshold])``
+---------------------------------------
+
+Formats a number of bytes as a file size with an appropriately-scaled unit. The
+threshold argument determines the point at which the next unit up is used,
+defaulting to 768.
+
+File sizes are rounded to the second decimal point, with any trailing zeros
+being stripped off and the decimal point also being omitted if all decimals
+are zero.
+
+::
+
+  format.fileSize(768) // '768 bytes'
+  format.fileSize(769) // '0.75 kB
+  format.fileSize(123456789) // '117.74 MB'
+
 re
 ==
 

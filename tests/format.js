@@ -30,4 +30,16 @@ QUnit.test('format.formatObj', function() {
   equal(format.formatObj('{{foo}={foo}, {{bar}={bar}', {foo: 1, bar: 2}), '{foo}=1, {bar}=2', 'README example')
 })
 
+QUnit.test('format.fileSize', function() {
+  equal(format.fileSize(768), '768 bytes')
+  equal(format.fileSize(769), '0.75 kB')
+  equal(format.fileSize(768 * 1024), '768 kB')
+  equal(format.fileSize(1 + 768 * 1024), '0.75 MB')
+  equal(format.fileSize(123456789), '117.74 MB')
+  equal(format.fileSize(768 * Math.pow(1024, 2)), '768 MB')
+  equal(format.fileSize(1 + 768 * Math.pow(1024, 2)), '0.75 GB')
+  equal(format.fileSize(768 * Math.pow(1024, 3)), '768 GB')
+  equal(format.fileSize(1 + 768 * Math.pow(1024, 3)), '0.75 TB')
+})
+
 }()
