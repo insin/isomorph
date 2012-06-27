@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Isomorph QUnit Tests</title>
-  <script src="http://code.jquery.com/qunit/git/qunit.js"></script>
-  <link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css" media="screen">
-  <!-- Custom test assertions -->
+  <!-- Test framework -->
+  <link rel="stylesheet" href="qunit/qunit.css">
+  <script src="qunit/qunit.js"></script>
+  <!-- Custom assertions -->
   <script src="customAsserts.js"></script>
-  <!-- Code -->
+  <!-- Code under test -->
   <script src="../isomorph.js"></script>
-  <!-- Tests -->
+  <!-- Test cases -->
   <script src="is.js"></script>
   <script src="array.js"></script>
   <script src="func.js"></script>
@@ -20,11 +22,7 @@
   <script src="time.js"></script>
 </head>
 <body>
-  <h1 id="qunit-header">Isomorph QUnit Tests</h1>
-  <h2 id="qunit-banner"></h2>
-  <div id="qunit-testrunner-toolbar"></div>
-  <h2 id="qunit-userAgent"></h2>
-  <ol id="qunit-tests"></ol>
+  <div id="qunit"></div>
   <div id="qunit-fixture"></div>
 </body>
 </html>
