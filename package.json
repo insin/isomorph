@@ -10,7 +10,7 @@
   , "url": "http://github.com/insin/isomorph.git"
   }
 , "devDependencies": {
-    "qqunit": "0.1.x"
+    "qqunit": "0.4.x"
   , "buildumb": "0.1.x"
   }
 , "scripts": {
