@@ -1,4 +1,4 @@
-QUnit.module('isomorph/lib/querystring')
+QUnit.module('isomorph/querystring')
 
 void function() {
 

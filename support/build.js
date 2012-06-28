@@ -5,17 +5,17 @@ var buildumb = require('buildumb')
 buildumb.build({
   root: path.normalize(path.join(__dirname, '..'))
 , modules: {
-    'lib/is.js'          : './is'
-  , 'lib/array.js'       : './array'
-  , 'lib/format.js'      : './format'
-  , 'lib/func.js'        : './func'
-  , 'lib/object.js'      : './object'
-  , 'lib/re.js'          : './re'
-  , 'lib/querystring.js' : './querystring'
-  , 'lib/copy.js'        : './copy'
-  , 'lib/time.js'        : './time'
-  , 'lib/url.js'         : './url'
-  , 'lib/isomorph.js'    : 'isomorph'
+    'is.js'          : './is'
+  , 'array.js'       : './array'
+  , 'format.js'      : './format'
+  , 'func.js'        : './func'
+  , 'object.js'      : './object'
+  , 're.js'          : './re'
+  , 'querystring.js' : './querystring'
+  , 'copy.js'        : './copy'
+  , 'time.js'        : './time'
+  , 'url.js'         : './url'
+  , 'index.js'       : 'isomorph'
   }
 , exports: {
     'isomorph': 'isomorph'

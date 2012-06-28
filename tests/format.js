@@ -1,4 +1,4 @@
-QUnit.module('isomorph/lib/format')
+QUnit.module('isomorph/format')
 
 void function() {
 

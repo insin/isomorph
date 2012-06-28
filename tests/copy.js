@@ -1,4 +1,4 @@
-QUnit.module('isomorph/lib/copy')
+QUnit.module('isomorph/copy')
 
 void function() {
 

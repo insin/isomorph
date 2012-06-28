@@ -1,10 +1,10 @@
 {
   "name": "isomorph"
 , "description": "Shared utilities for browsers and Node.js"
-, "version": "0.1.10"
+, "version": "0.2.0"
 , "author": "Jonathan Buchanan <jonathan.buchanan@gmail.com> (https://github.com/insin)"
 , "tags": ["dualsided", "utilities"]
-, "main": "lib/isomorph"
+, "main": "index"
 , "repository": {
     "type": "git"
   , "url": "http://github.com/insin/isomorph.git"

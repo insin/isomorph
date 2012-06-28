@@ -1,5 +1,5 @@
 /**
- * isomorph 0.1.10 - https://github.com/insin/isomorph
+ * isomorph 0.2.0 - https://github.com/insin/isomorph
  * MIT Licensed
  */
 ;(function() {
@@ -1127,19 +1127,18 @@ module.exports = {
 })
 
 require.define("isomorph", function(module, exports, require) {
-exports.version = '0.1.9'
-
-exports.is = require('./is')
-exports.array = require('./array')
-exports.func = require('./func')
-exports.object = require('./object')
-exports.format = require('./format')
-exports.re = require('./re')
-exports.querystring = require('./querystring')
-exports.copy = require('./copy')
-exports.time = require('./time')
-exports.url = require('./url')
-})
+module.exports = {
+  is: require('./is')
+, array: require('./array')
+, func: require('./func')
+, object: require('./object')
+, format: require('./format')
+, re: require('./re')
+, querystring: require('./querystring')
+, copy: require('./copy')
+, time: require('./time')
+, url: require('./url')
+}})
 
 window['isomorph'] = require('isomorph')
 

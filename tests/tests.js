@@ -1,10 +1,10 @@
 var path = require('path')
 
 var qqunit = require('qqunit')
-  , object = require('../lib/object')
+  , object = require('../object')
 
 object.extend(global, require('./customAsserts'))
-global.isomorph = require('../lib/isomorph')
+global.isomorph = require('../index')
 
 var tests = [ 'is.js'
             , 'array.js'

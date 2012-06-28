@@ -6,11 +6,13 @@ Isomorph |travis_status|
    :target: http://travis-ci.org/insin/isomorph
 
 Utilities extracted from my dual-sided projects, which can be shared between
-browsers and `Node.js`_.
+browsers and `Node.js`_. This project is really a grab-bag, so modules are
+intended to be required individually as needed, e.g. for type-checking functions
+you would ``require('isomorph/is')``.
 
 Browsers:
 
-* `isomorph.js`_
+* `isomorph.js`_ / `isomorph.min.js`_
 
 Node.js::
 
@@ -18,6 +20,7 @@ Node.js::
 
 .. _`Node.js`: http://nodejs.org
 .. _`isomorph.js`: https://raw.github.com/insin/isomorph/master/isomorph.js
+.. _`isomorph.min.js`: https://raw.github.com/insin/isomorph/master/isomorph.min.js
 
 is
 ==

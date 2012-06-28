@@ -1,4 +1,4 @@
-QUnit.module('isomorph/lib/object')
+QUnit.module('isomorph/object')
 
 void function() {
 

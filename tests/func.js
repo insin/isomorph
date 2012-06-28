@@ -1,4 +1,4 @@
-QUnit.module('isomorph/lib/func')
+QUnit.module('isomorph/func')
 
 void function() {
 

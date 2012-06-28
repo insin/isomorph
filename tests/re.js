@@ -1,4 +1,4 @@
-QUnit.module('isomorph/lib/re')
+QUnit.module('isomorph/re')
 
 void function() {
 

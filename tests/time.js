@@ -1,4 +1,4 @@
-QUnit.module('isomorph/lib/time')
+QUnit.module('isomorph/time')
 
 void function() {
 

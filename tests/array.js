@@ -1,4 +1,4 @@
-QUnit.module('isomorph/lib/array')
+QUnit.module('isomorph/array')
 
 void function() {
 
