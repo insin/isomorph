@@ -2,5 +2,5 @@
 .travis.yml
 support
 tests
-isomorph.js
-isomorph.min.js
+/isomorph.js
+/isomorph.min.js
