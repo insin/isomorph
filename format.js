@@ -1,5 +1,6 @@
-var is = require('./is')
-  , slice = Array.prototype.slice
+'use strict';
+
+var slice = Array.prototype.slice
   , formatRegExp = /%[%s]/g
   , formatObjRegExp = /({{?)(\w+)}/g
 

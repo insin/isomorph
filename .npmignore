@@ -1,6 +1,8 @@
 .gitignore
+.jshintrc
 .travis.yml
 support
 tests
+/gulpfile.js
 /isomorph.js
 /isomorph.min.js

@@ -1,3 +1,5 @@
+'use strict';
+
 var is = require('./is')
 
 /**
@@ -196,15 +198,16 @@ TimeParser.prototype.parse = function(input) {
   }
 
   // Extract hour
+  var hour
   if (data.hasOwnProperty('H')) {
-    var hour = parseInt(data.H, 10)
+    hour = parseInt(data.H, 10)
     if (hour > 23) {
       throw new Error('Hour is out of range: ' + hour)
     }
     time[3] = hour
   }
   else if (data.hasOwnProperty('I')) {
-    var hour = parseInt(data.I, 10)
+    hour = parseInt(data.I, 10)
     if (hour < 1 || hour > 12) {
       throw new Error('Hour is out of range: ' + hour)
     }
@@ -245,11 +248,11 @@ TimeParser.prototype.parse = function(input) {
   }
 
   // Validate day of month
-  var day = time[2], month = time[1], year = time[0]
+  day = time[2], month = time[1], year = time[0]
   if (((month == 4 || month == 6 || month == 9 || month == 11) &&
       day > 30) ||
-      (month == 2 && day > ((year % 4 == 0 && year % 100 != 0 ||
-                             year % 400 == 0) ? 29 : 28))) {
+      (month == 2 && day > ((year % 4 === 0 && year % 100 !== 0 ||
+                             year % 400 === 0) ? 29 : 28))) {
     throw new Error('Day is out of range: ' + day)
   }
 

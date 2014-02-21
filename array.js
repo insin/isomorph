@@ -1,3 +1,5 @@
+'use strict';
+
 var is = require('./is')
 
 var splice = Array.prototype.splice

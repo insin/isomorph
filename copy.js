@@ -1,3 +1,5 @@
+'use strict';
+
 var is = require('./is')
 
 /* This file is part of OWL JavaScript Utilities.
@@ -45,24 +47,25 @@ function copy(target) {
       return new target.constructor(value)
     }
     else {
+      var c, property
       // We have a normal object. If possible, we'll clone the original's
       // prototype (not the original) to get an empty object with the same
       // prototype chain as the original. If just copy the instance properties.
       // Otherwise, we have to copy the whole thing, property-by-property.
       if (target instanceof target.constructor && target.constructor !== Object) {
-        var c = clone(target.constructor.prototype)
+        c = clone(target.constructor.prototype)
 
         // Give the copy all the instance properties of target. It has the same
         // prototype as target, so inherited properties are already there.
-        for (var property in target) {
+        for (property in target) {
           if (target.hasOwnProperty(property)) {
             c[property] = target[property]
           }
         }
       }
       else {
-        var c = {}
-        for (var property in target) {
+        c = {}
+        for (property in target) {
           c[property] = target[property]
         }
       }
@@ -141,17 +144,17 @@ DeepCopyAlgorithm.prototype = {
 , deepCopy: function(source) {
     // null is a special case: it's the only value of type 'object' without
     // properties.
-    if (source === null) return null
+    if (source === null) { return null }
 
     // All non-objects use value semantics and don't need explict copying
-    if (typeof source != 'object') return source
+    if (typeof source != 'object') { return source }
 
     var cachedResult = this.getCachedResult(source)
 
     // We've already seen this object during this deep copy operation so can
     // immediately return the result. This preserves the cyclic reference
     // structure and protects us from infinite recursion.
-    if (cachedResult) return cachedResult
+    if (cachedResult) { return cachedResult }
 
     // Objects may need special handling depending on their class. There is a
     // class of handlers call "DeepCopiers" that know how to copy certain

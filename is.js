@@ -1,3 +1,5 @@
+'use strict';
+
 var toString = Object.prototype.toString
 
 // Type checks
@@ -41,9 +43,11 @@ function isString(o) {
 // Content checks
 
 function isEmpty(o) {
+  /* jshint ignore:start */
   for (var prop in o) {
     return false
   }
+  /* jshint ignore:end */
   return true
 }
 

@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Callbound version of Object.prototype.hasOwnProperty(), ready to be called
  * with an object and property name.
@@ -40,13 +42,13 @@ function inherits(childConstructor, parentConstructor) {
  * Creates an Array of [property, value] pairs from an Object.
  */
 function items(obj) {
-  var items = []
+  var items_ = []
   for (var prop in obj) {
     if (hasOwn(obj, prop)) {
-      items.push([prop, obj[prop]])
+      items_.push([prop, obj[prop]])
     }
   }
-  return items
+  return items_
 }
 
 /**
