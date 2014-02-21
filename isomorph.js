@@ -1,93 +1,10 @@
 /**
- * isomorph 0.2.0 - https://github.com/insin/isomorph
+ * isomorph 0.2.1 - https://github.com/insin/isomorph
  * MIT Licensed
  */
-;(function() {
-  var modules = {}
-  function require(name) {
-    return modules[name]
-  }
-  require.define = function(rs, fn) {
-    var module = {}
-      , exports = {}
-    module.exports = exports
-    fn(module, exports, require)
-    if (Object.prototype.toString.call(rs) == '[object Array]') {
-      for (var i = 0, l = rs.length; i < l; i++) {
-        modules[rs[i]] = module.exports
-      }
-    }
-    else {
-      modules[rs] = module.exports
-    }
-  }
+!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),o.isomorph=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
 
-require.define("./is", function(module, exports, require) {
-var toString = Object.prototype.toString
-
-// Type checks
-
-function isArray(o) {
-  return toString.call(o) == '[object Array]'
-}
-
-function isBoolean(o) {
-  return toString.call(o) == '[object Boolean]'
-}
-
-function isDate(o) {
-  return toString.call(o) == '[object Date]'
-}
-
-function isError(o) {
-  return toString.call(o) == '[object Error]'
-}
-
-function isFunction(o) {
-  return toString.call(o) == '[object Function]'
-}
-
-function isNumber(o) {
-  return toString.call(o) == '[object Number]'
-}
-
-function isObject(o) {
-  return toString.call(o) == '[object Object]'
-}
-
-function isRegExp(o) {
-  return toString.call(o) == '[object RegExp]'
-}
-
-function isString(o) {
-  return toString.call(o) == '[object String]'
-}
-
-// Content checks
-
-function isEmpty(o) {
-  for (var prop in o) {
-    return false
-  }
-  return true
-}
-
-module.exports = {
-  Array: isArray
-, Boolean: isBoolean
-, Date: isDate
-, Empty: isEmpty
-, Error: isError
-, Function: isFunction
-, NaN: isNaN
-, Number: isNumber
-, Object: isObject
-, RegExp: isRegExp
-, String: isString
-}
-})
-
-require.define("./array", function(module, exports, require) {
 var is = require('./is')
 
 var splice = Array.prototype.splice
@@ -116,275 +33,10 @@ function flatten(arr) {
 module.exports = {
   flatten: flatten
 }
-})
 
-require.define("./format", function(module, exports, require) {
-var is = require('./is')
-  , slice = Array.prototype.slice
-  , formatRegExp = /%[%s]/g
-  , formatObjRegExp = /({{?)(\w+)}/g
+},{"./is":6}],2:[function(require,module,exports){
+'use strict';
 
-/**
- * Replaces %s placeholders in a string with positional arguments.
- */
-function format(s) {
-  return formatArr(s, slice.call(arguments, 1))
-}
-
-/**
- * Replaces %s placeholders in a string with array contents.
- */
-function formatArr(s, a) {
-  var i = 0
-  return s.replace(formatRegExp, function(m) { return m == '%%' ? '%' : a[i++] })
-}
-
-/**
- * Replaces {propertyName} placeholders in a string with object properties.
- */
-function formatObj(s, o) {
-  return s.replace(formatObjRegExp, function(m, b, p) { return b.length == 2 ? m.slice(1) : o[p] })
-}
-
-var units = 'kMGTPEZY'
-  , stripDecimals = /\.00$|0$/
-
-/**
- * Formats bytes as a file size with the appropriately scaled units.
- */
-function fileSize(bytes, threshold) {
-  threshold = Math.min(threshold || 768, 1024)
-  var i = -1
-    , unit = 'bytes'
-    , size = bytes
-  while (size > threshold && i < units.length) {
-    size = size / 1024
-    i++
-  }
-  if (i > -1) {
-    unit = units.charAt(i) + 'B'
-  }
-  return size.toFixed(2).replace(stripDecimals, '') + ' ' + unit
-}
-
-module.exports = {
-  format: format
-, formatArr: formatArr
-, formatObj: formatObj
-, fileSize: fileSize
-}
-})
-
-require.define("./func", function(module, exports, require) {
-var slice = Array.prototype.slice
-
-/**
- * Binds a function with a call context and (optionally) some partially applied
- * arguments.
- */
-function bind(fn, ctx) {
-  var partial = (arguments.length > 2 ? slice.call(arguments, 2) : null)
-  var f = function() {
-    var args = (partial ? partial.concat(slice.call(arguments)) : arguments)
-    return fn.apply(ctx, args)
-  }
-  f.__func__ = fn
-  f.__context__ = ctx
-  return f
-}
-
-module.exports = {
-  bind: bind
-}
-})
-
-require.define("./object", function(module, exports, require) {
-/**
- * Callbound version of Object.prototype.hasOwnProperty(), ready to be called
- * with an object and property name.
- */
-var hasOwn = (function() {
-  var hasOwnProperty = Object.prototype.hasOwnProperty
-  return function(obj, prop) { return hasOwnProperty.call(obj, prop) }
-})()
-
-/**
- * Copies own properties from any given objects to a destination object.
- */
-function extend(dest) {
-  for (var i = 1, l = arguments.length, src; i < l; i++) {
-    src = arguments[i]
-    if (src) {
-      for (var prop in src) {
-        if (hasOwn(src, prop)) {
-          dest[prop] = src[prop]
-        }
-      }
-    }
-  }
-  return dest
-}
-
-/**
- * Makes a constructor inherit another constructor's prototype without
- * having to actually use the constructor.
- */
-function inherits(childConstructor, parentConstructor) {
-  var F = function() {}
-  F.prototype = parentConstructor.prototype
-  childConstructor.prototype = new F()
-  childConstructor.prototype.constructor = childConstructor
-  return childConstructor
-}
-
-/**
- * Creates an Array of [property, value] pairs from an Object.
- */
-function items(obj) {
-  var items = []
-  for (var prop in obj) {
-    if (hasOwn(obj, prop)) {
-      items.push([prop, obj[prop]])
-    }
-  }
-  return items
-}
-
-/**
- * Creates an Object from an Array of [property, value] pairs.
- */
-function fromItems(items) {
-  var obj = {}
-  for (var i = 0, l = items.length, item; i < l; i++) {
-    item = items[i]
-    obj[item[0]] = item[1]
-  }
-  return obj
-}
-
-/**
- * Creates a lookup Object from an Array, coercing each item to a String.
- */
-function lookup(arr) {
-  var obj = {}
-  for (var i = 0, l = arr.length; i < l; i++) {
-    obj[''+arr[i]] = true
-  }
-  return obj
-}
-
-/**
- * If the given object has the given property, returns its value, otherwise
- * returns the given default value.
- */
-function get(obj, prop, defaultValue) {
-  return (hasOwn(obj, prop) ? obj[prop] : defaultValue)
-}
-
-module.exports = {
-  hasOwn: hasOwn
-, extend: extend
-, inherits: inherits
-, items: items
-, fromItems: fromItems
-, lookup: lookup
-, get: get
-}
-})
-
-require.define("./re", function(module, exports, require) {
-var is = require('./is')
-
-/**
- * Finds all matches againt a RegExp, returning captured groups if present.
- */
-function findAll(re, str, flags) {
-  if (!is.RegExp(re)) {
-    re = new RegExp(re, flags)
-  }
-  var match = null
-    , matches = []
-  while ((match = re.exec(str)) !== null) {
-    switch (match.length) {
-      case 1:
-        matches.push(match[0])
-        break
-      case 2:
-        matches.push(match[1])
-        break
-      default:
-        matches.push(match.slice(1))
-    }
-    if (!re.global) {
-      break
-    }
-  }
-  return matches
-}
-
-module.exports = {
-  findAll: findAll
-}
-})
-
-require.define("./querystring", function(module, exports, require) {
-var is = require('./is')
-
-/**
- * Creates an Object from a query string, providing values for names which are
- * present more than once as an Array.
- */
-function parse(query) {
-  var obj = {}
-  if (query.length < 2) {
-    return obj
-  }
-  var params = query.substring(1).split('&')
-  for (var i = 0, l = params.length; i < l; i++) {
-    var parts = params[i].split('=')
-      , name = parts[0]
-      , value = decodeURIComponent(parts[1])
-    if (obj.hasOwnProperty(name)) {
-      if (is.Array(obj[name])) {
-        obj[name].push(value)
-      }
-      else {
-        obj[name] = [obj[name], value]
-      }
-    }
-    else {
-      obj[name] = value
-    }
-  }
-  return obj
-}
-
-/**
- * Creates a query string from an Object, expecting names with multiple values
- * to be specified as an Array.
- */
-function stringify(obj) {
-  var params = []
-  for (var name in obj) {
-    if (is.Array(obj[name])) {
-      for (var a = obj[name], i = 0, l = a.length; i < l; i++) {
-        params.push(name + '=' + encodeURIComponent(a[i]))
-      }
-    }
-    else {
-      params.push(name + '=' + encodeURIComponent(obj[name]))
-    }
-  }
-  return params.join('&')
-}
-
-module.exports = {
-  parse: parse
-, stringify: stringify
-}
-})
-
-require.define("./copy", function(module, exports, require) {
 var is = require('./is')
 
 /* This file is part of OWL JavaScript Utilities.
@@ -432,24 +84,25 @@ function copy(target) {
       return new target.constructor(value)
     }
     else {
+      var c, property
       // We have a normal object. If possible, we'll clone the original's
       // prototype (not the original) to get an empty object with the same
       // prototype chain as the original. If just copy the instance properties.
       // Otherwise, we have to copy the whole thing, property-by-property.
       if (target instanceof target.constructor && target.constructor !== Object) {
-        var c = clone(target.constructor.prototype)
+        c = clone(target.constructor.prototype)
 
         // Give the copy all the instance properties of target. It has the same
         // prototype as target, so inherited properties are already there.
-        for (var property in target) {
+        for (property in target) {
           if (target.hasOwnProperty(property)) {
             c[property] = target[property]
           }
         }
       }
       else {
-        var c = {}
-        for (var property in target) {
+        c = {}
+        for (property in target) {
           c[property] = target[property]
         }
       }
@@ -528,17 +181,17 @@ DeepCopyAlgorithm.prototype = {
 , deepCopy: function(source) {
     // null is a special case: it's the only value of type 'object' without
     // properties.
-    if (source === null) return null
+    if (source === null) { return null }
 
     // All non-objects use value semantics and don't need explict copying
-    if (typeof source != 'object') return source
+    if (typeof source != 'object') { return source }
 
     var cachedResult = this.getCachedResult(source)
 
     // We've already seen this object during this deep copy operation so can
     // immediately return the result. This preserves the cyclic reference
     // structure and protects us from infinite recursion.
-    if (cachedResult) return cachedResult
+    if (cachedResult) { return cachedResult }
 
     // Objects may need special handling depending on their class. There is a
     // class of handlers call "DeepCopiers" that know how to copy certain
@@ -683,9 +336,405 @@ module.exports = {
 , clone: clone
 , deepCopy: deepCopy
 }
-})
 
-require.define("./time", function(module, exports, require) {
+},{"./is":6}],3:[function(require,module,exports){
+'use strict';
+
+var slice = Array.prototype.slice
+  , formatRegExp = /%[%s]/g
+  , formatObjRegExp = /({{?)(\w+)}/g
+
+/**
+ * Replaces %s placeholders in a string with positional arguments.
+ */
+function format(s) {
+  return formatArr(s, slice.call(arguments, 1))
+}
+
+/**
+ * Replaces %s placeholders in a string with array contents.
+ */
+function formatArr(s, a) {
+  var i = 0
+  return s.replace(formatRegExp, function(m) { return m == '%%' ? '%' : a[i++] })
+}
+
+/**
+ * Replaces {propertyName} placeholders in a string with object properties.
+ */
+function formatObj(s, o) {
+  return s.replace(formatObjRegExp, function(m, b, p) { return b.length == 2 ? m.slice(1) : o[p] })
+}
+
+var units = 'kMGTPEZY'
+  , stripDecimals = /\.00$|0$/
+
+/**
+ * Formats bytes as a file size with the appropriately scaled units.
+ */
+function fileSize(bytes, threshold) {
+  threshold = Math.min(threshold || 768, 1024)
+  var i = -1
+    , unit = 'bytes'
+    , size = bytes
+  while (size > threshold && i < units.length) {
+    size = size / 1024
+    i++
+  }
+  if (i > -1) {
+    unit = units.charAt(i) + 'B'
+  }
+  return size.toFixed(2).replace(stripDecimals, '') + ' ' + unit
+}
+
+module.exports = {
+  format: format
+, formatArr: formatArr
+, formatObj: formatObj
+, fileSize: fileSize
+}
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+var slice = Array.prototype.slice
+
+/**
+ * Binds a function with a call context and (optionally) some partially applied
+ * arguments.
+ */
+function bind(fn, ctx) {
+  var partial = (arguments.length > 2 ? slice.call(arguments, 2) : null)
+  var f = function() {
+    var args = (partial ? partial.concat(slice.call(arguments)) : arguments)
+    return fn.apply(ctx, args)
+  }
+  f.__func__ = fn
+  f.__context__ = ctx
+  return f
+}
+
+module.exports = {
+  bind: bind
+}
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+  is: require('./is')
+, array: require('./array')
+, func: require('./func')
+, object: require('./object')
+, format: require('./format')
+, re: require('./re')
+, querystring: require('./querystring')
+, copy: require('./copy')
+, time: require('./time')
+, url: require('./url')
+}
+},{"./array":1,"./copy":2,"./format":3,"./func":4,"./is":6,"./object":7,"./querystring":8,"./re":9,"./time":10,"./url":11}],6:[function(require,module,exports){
+'use strict';
+
+var toString = Object.prototype.toString
+
+// Type checks
+
+function isArray(o) {
+  return toString.call(o) == '[object Array]'
+}
+
+function isBoolean(o) {
+  return toString.call(o) == '[object Boolean]'
+}
+
+function isDate(o) {
+  return toString.call(o) == '[object Date]'
+}
+
+function isError(o) {
+  return toString.call(o) == '[object Error]'
+}
+
+function isFunction(o) {
+  return toString.call(o) == '[object Function]'
+}
+
+function isNumber(o) {
+  return toString.call(o) == '[object Number]'
+}
+
+function isObject(o) {
+  return toString.call(o) == '[object Object]'
+}
+
+function isRegExp(o) {
+  return toString.call(o) == '[object RegExp]'
+}
+
+function isString(o) {
+  return toString.call(o) == '[object String]'
+}
+
+// Content checks
+
+function isEmpty(o) {
+  /* jshint ignore:start */
+  for (var prop in o) {
+    return false
+  }
+  /* jshint ignore:end */
+  return true
+}
+
+module.exports = {
+  Array: isArray
+, Boolean: isBoolean
+, Date: isDate
+, Empty: isEmpty
+, Error: isError
+, Function: isFunction
+, NaN: isNaN
+, Number: isNumber
+, Object: isObject
+, RegExp: isRegExp
+, String: isString
+}
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
+/**
+ * Wraps Object.prototype.hasOwnProperty() so it can be called with an object
+ * and property name.
+ */
+var hasOwn = (function() {
+  var hasOwnProperty = Object.prototype.hasOwnProperty
+  return function(obj, prop) { return hasOwnProperty.call(obj, prop) }
+})()
+
+/**
+ * Copies own properties from any given objects to a destination object.
+ */
+function extend(dest) {
+  for (var i = 1, l = arguments.length, src; i < l; i++) {
+    src = arguments[i]
+    if (src) {
+      for (var prop in src) {
+        if (hasOwn(src, prop)) {
+          dest[prop] = src[prop]
+        }
+      }
+    }
+  }
+  return dest
+}
+
+/**
+ * Makes a constructor inherit another constructor's prototype without
+ * having to actually use the constructor.
+ */
+function inherits(childConstructor, parentConstructor) {
+  var F = function() {}
+  F.prototype = parentConstructor.prototype
+  childConstructor.prototype = new F()
+  childConstructor.prototype.constructor = childConstructor
+  return childConstructor
+}
+
+/**
+ * Creates an Array of [property, value] pairs from an Object.
+ */
+function items(obj) {
+  var items_ = []
+  for (var prop in obj) {
+    if (hasOwn(obj, prop)) {
+      items_.push([prop, obj[prop]])
+    }
+  }
+  return items_
+}
+
+/**
+ * Creates an Object from an Array of [property, value] pairs.
+ */
+function fromItems(items) {
+  var obj = {}
+  for (var i = 0, l = items.length, item; i < l; i++) {
+    item = items[i]
+    obj[item[0]] = item[1]
+  }
+  return obj
+}
+
+/**
+ * Creates a lookup Object from an Array, coercing each item to a String.
+ */
+function lookup(arr) {
+  var obj = {}
+  for (var i = 0, l = arr.length; i < l; i++) {
+    obj[''+arr[i]] = true
+  }
+  return obj
+}
+
+/**
+ * If the given object has the given property, returns its value, otherwise
+ * returns the given default value.
+ */
+function get(obj, prop, defaultValue) {
+  return (hasOwn(obj, prop) ? obj[prop] : defaultValue)
+}
+
+/**
+ * Deletes and returns an own property from an object, optionally returning a
+ * default value if the object didn't have theproperty.
+ * @throws if given an object which is null (or undefined), or if the property
+ *   doesn't exist and there was no defaultValue given.
+ */
+function pop(obj, prop, defaultValue) {
+  if (obj == null) {
+    throw new Error('popProp was given ' + obj)
+  }
+  if (hasOwn(obj, prop)) {
+    var value = obj[prop]
+    delete obj[prop]
+    return value
+  }
+  else if (arguments.length == 2) {
+    throw new Error("popProp was given an object which didn't have an own '" +
+                    prop + "' property, without a default value to return")
+  }
+  return defaultValue
+}
+
+/**
+ * If the prop is in the object, return its value. If not, set the prop to
+ * defaultValue and return defaultValue.
+ */
+function setDefault(obj, prop, defaultValue) {
+  if (obj == null) {
+    throw new Error('setDefault was given ' + obj)
+  }
+  defaultValue = defaultValue || null
+  if (hasOwn(obj, prop)) {
+    return obj[prop]
+  }
+  else {
+    obj[prop] = defaultValue
+    return defaultValue
+  }
+}
+
+module.exports = {
+  hasOwn: hasOwn
+, extend: extend
+, inherits: inherits
+, items: items
+, fromItems: fromItems
+, lookup: lookup
+, get: get
+, pop: pop
+, setDefault: setDefault
+}
+
+},{}],8:[function(require,module,exports){
+'use strict';
+
+var is = require('./is')
+
+/**
+ * Creates an Object from a query string, providing values for names which are
+ * present more than once as an Array.
+ */
+function parse(query) {
+  var obj = {}
+  if (query.length < 2) {
+    return obj
+  }
+  var params = query.substring(1).split('&')
+  for (var i = 0, l = params.length; i < l; i++) {
+    var parts = params[i].split('=')
+      , name = parts[0]
+      , value = decodeURIComponent(parts[1])
+    if (obj.hasOwnProperty(name)) {
+      if (is.Array(obj[name])) {
+        obj[name].push(value)
+      }
+      else {
+        obj[name] = [obj[name], value]
+      }
+    }
+    else {
+      obj[name] = value
+    }
+  }
+  return obj
+}
+
+/**
+ * Creates a query string from an Object, expecting names with multiple values
+ * to be specified as an Array.
+ */
+function stringify(obj) {
+  var params = []
+  for (var name in obj) {
+    if (is.Array(obj[name])) {
+      for (var a = obj[name], i = 0, l = a.length; i < l; i++) {
+        params.push(name + '=' + encodeURIComponent(a[i]))
+      }
+    }
+    else {
+      params.push(name + '=' + encodeURIComponent(obj[name]))
+    }
+  }
+  return params.join('&')
+}
+
+module.exports = {
+  parse: parse
+, stringify: stringify
+}
+
+},{"./is":6}],9:[function(require,module,exports){
+'use strict';
+
+var is = require('./is')
+
+/**
+ * Finds all matches againt a RegExp, returning captured groups if present.
+ */
+function findAll(re, str, flags) {
+  if (!is.RegExp(re)) {
+    re = new RegExp(re, flags)
+  }
+  var match = null
+    , matches = []
+  while ((match = re.exec(str)) !== null) {
+    switch (match.length) {
+      case 1:
+        matches.push(match[0])
+        break
+      case 2:
+        matches.push(match[1])
+        break
+      default:
+        matches.push(match.slice(1))
+    }
+    if (!re.global) {
+      break
+    }
+  }
+  return matches
+}
+
+module.exports = {
+  findAll: findAll
+}
+
+},{"./is":6}],10:[function(require,module,exports){
+'use strict';
+
 var is = require('./is')
 
 /**
@@ -884,15 +933,16 @@ TimeParser.prototype.parse = function(input) {
   }
 
   // Extract hour
+  var hour
   if (data.hasOwnProperty('H')) {
-    var hour = parseInt(data.H, 10)
+    hour = parseInt(data.H, 10)
     if (hour > 23) {
       throw new Error('Hour is out of range: ' + hour)
     }
     time[3] = hour
   }
   else if (data.hasOwnProperty('I')) {
-    var hour = parseInt(data.I, 10)
+    hour = parseInt(data.I, 10)
     if (hour < 1 || hour > 12) {
       throw new Error('Hour is out of range: ' + hour)
     }
@@ -933,11 +983,11 @@ TimeParser.prototype.parse = function(input) {
   }
 
   // Validate day of month
-  var day = time[2], month = time[1], year = time[0]
+  day = time[2], month = time[1], year = time[0]
   if (((month == 4 || month == 6 || month == 9 || month == 11) &&
       day > 30) ||
-      (month == 2 && day > ((year % 4 == 0 && year % 100 != 0 ||
-                             year % 400 == 0) ? 29 : 28))) {
+      (month == 2 && day > ((year % 4 === 0 && year % 100 !== 0 ||
+                             year % 400 === 0) ? 29 : 28))) {
     throw new Error('Day is out of range: ' + day)
   }
 
@@ -1034,9 +1084,10 @@ time.strftime = function(date, format, locale) {
 }
 
 module.exports = time
-})
 
-require.define("./url", function(module, exports, require) {
+},{"./is":6}],11:[function(require,module,exports){
+'use strict';
+
 // parseUri 1.2.2
 // (c) Steven Levithan <stevenlevithan.com>
 // MIT License
@@ -1046,11 +1097,11 @@ function parseUri (str) {
     , uri = {}
     , i = 14
 
-  while (i--) uri[o.key[i]] = m[i] || ""
+  while (i--) { uri[o.key[i]] = m[i] || "" }
 
   uri[o.q.name] = {};
   uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
-    if ($1) uri[o.q.name][$1] = $2
+    if ($1) { uri[o.q.name][$1] = $2 }
   })
 
   return uri
@@ -1124,22 +1175,7 @@ module.exports = {
   parseUri: parseUri
 , makeUri: makeUri
 }
-})
 
-require.define("isomorph", function(module, exports, require) {
-module.exports = {
-  is: require('./is')
-, array: require('./array')
-, func: require('./func')
-, object: require('./object')
-, format: require('./format')
-, re: require('./re')
-, querystring: require('./querystring')
-, copy: require('./copy')
-, time: require('./time')
-, url: require('./url')
-}})
-
-window['isomorph'] = require('isomorph')
-
-})();
+},{}]},{},[5])
+(5)
+});

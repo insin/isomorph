@@ -86,7 +86,7 @@ Utilities for working with Objects.
 ``object.hasOwn(obj, propertyName)``
 ------------------------------------
 
-Callbound version of ``Object.prototype.hasOwnProperty()`` -- use to avoid the
+Wrapped version of``Object.prototype.hasOwnProperty()`` -- use to avoid the
 "hasOwnProperty trap", as described in `An Object is not a Hash`_.
 
 .. _`An Object is not a Hash`: http://www.devthought.com/2012/01/18/an-object-is-not-a-hash/
@@ -154,6 +154,18 @@ and adding it to a lookup Object as a property whose value is ``true``::
 
 If the object has an own property with the given name, returns its value,
 otherwise returns the given default.
+
+``object.pop(obj, prop, default)``
+----------------------------------
+
+If the object has an own property with the given name, deletes the property from
+the object and returns its value, otherwise returns the given default.
+
+``object.setDefault(obj, prop, default)``
+-----------------------------------------
+
+If the object has an own property with the given name, returns its value,
+otherwise sets the given default as the property and returns it.
 
 format
 ======

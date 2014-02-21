@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * Callbound version of Object.prototype.hasOwnProperty(), ready to be called
- * with an object and property name.
+ * Wraps Object.prototype.hasOwnProperty() so it can be called with an object
+ * and property name.
  */
 var hasOwn = (function() {
   var hasOwnProperty = Object.prototype.hasOwnProperty
@@ -82,6 +82,46 @@ function get(obj, prop, defaultValue) {
   return (hasOwn(obj, prop) ? obj[prop] : defaultValue)
 }
 
+/**
+ * Deletes and returns an own property from an object, optionally returning a
+ * default value if the object didn't have theproperty.
+ * @throws if given an object which is null (or undefined), or if the property
+ *   doesn't exist and there was no defaultValue given.
+ */
+function pop(obj, prop, defaultValue) {
+  if (obj == null) {
+    throw new Error('popProp was given ' + obj)
+  }
+  if (hasOwn(obj, prop)) {
+    var value = obj[prop]
+    delete obj[prop]
+    return value
+  }
+  else if (arguments.length == 2) {
+    throw new Error("popProp was given an object which didn't have an own '" +
+                    prop + "' property, without a default value to return")
+  }
+  return defaultValue
+}
+
+/**
+ * If the prop is in the object, return its value. If not, set the prop to
+ * defaultValue and return defaultValue.
+ */
+function setDefault(obj, prop, defaultValue) {
+  if (obj == null) {
+    throw new Error('setDefault was given ' + obj)
+  }
+  defaultValue = defaultValue || null
+  if (hasOwn(obj, prop)) {
+    return obj[prop]
+  }
+  else {
+    obj[prop] = defaultValue
+    return defaultValue
+  }
+}
+
 module.exports = {
   hasOwn: hasOwn
 , extend: extend
@@ -90,4 +130,6 @@ module.exports = {
 , fromItems: fromItems
 , lookup: lookup
 , get: get
+, pop: pop
+, setDefault: setDefault
 }
