@@ -10,6 +10,14 @@ var hasOwn = (function() {
 })()
 
 /**
+ * Returns the type of an object as a lowercase string.
+ */
+var type = (function() {
+  var toString = Object.prototype.toString
+  return function(obj) { return toString.call(obj).slice(8, -1).toLowerCase() }
+})()
+
+/**
  * Copies own properties from any given objects to a destination object.
  */
 function extend(dest) {
@@ -124,6 +132,7 @@ function setDefault(obj, prop, defaultValue) {
 
 module.exports = {
   hasOwn: hasOwn
+, type: type
 , extend: extend
 , inherits: inherits
 , items: items

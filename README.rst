@@ -91,6 +91,14 @@ Wrapped version of``Object.prototype.hasOwnProperty()`` -- use to avoid the
 
 .. _`An Object is not a Hash`: http://www.devthought.com/2012/01/18/an-object-is-not-a-hash/
 
+``object.type(obj)``
+--------------------
+
+Returns the type of an object as a lowercase string::
+
+   object.type({}) // "object"
+   object.type([]) // "array"
+
 ``object.extend(dest[, src1, ...])``
 ------------------------------------
 

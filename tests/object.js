@@ -10,6 +10,30 @@ QUnit.test('object.hasOwn', function() {
   ok(object.hasOwn(o, 'hasOwnProperty'), 'Avoids the hasOwnProperty trap')
 })
 
+QUnit.test('object.type', function() {
+  var objs = {
+    string1: 'str1'
+  , string2: new String('str2')
+  , number1: 1
+  , number2: new Number('2')
+  , object1: {a: 1}
+  , object2: new Object()
+  , array1: []
+  , array2: new Array()
+  , function1: function() {}
+  , regexp1: /^1$/
+  , regexp2: new RegExp('^2$')
+  , date1: new Date()
+  , boolean1: true
+  , boolean2: new Boolean(true)
+  , error1: new Error('test')
+  }
+  Object.keys(objs).forEach(function(type) {
+    var expected = type.replace(/\d$/, '')
+    equal(object.type(objs[type]), expected, expected)
+  })
+})
+
 QUnit.test('object.extend (single)', function() {
   var t = {a: 1, b:2, c: 3}
   deepEqual(object.extend({}, t), t, 'Object copied to empty Object')
