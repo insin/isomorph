@@ -4,6 +4,14 @@ var hasOwn = Object.prototype.hasOwnProperty
 var toString = Object.prototype.toString
 var type = function(obj) { return toString.call(obj).slice(8, -1).toLowerCase() }
 
+var primitiveWrapperTypes = {
+  boolean: true
+, number: true
+, string: true
+}
+
+var stringPropsRE = /^(?:\d+|length)$/
+
 /* This file is part of OWL JavaScript Utilities.
 
 OWL JavaScript Utilities is free software: you can redistribute it and/or
@@ -37,19 +45,29 @@ function clone(target) {
 
 // Shallow Copy
 function copy(target) {
+  var c, property
   if (typeof target != 'object') {
     // Non-objects have value semantics, so target is already a copy
     return target
   }
   else {
     var value = target.valueOf()
-    if (target != value) {
-      // the object is a standard object wrapper for a native type, say String.
+    if (target == value) {
+      // The object is a standard object wrapper for a native type, say String.
       // we can make a copy by instantiating a new object around the value.
-      return new target.constructor(value)
+      c = new target.constructor(value)
+      var notString = type(target) != 'string'
+
+      // Wrappers can have properties added to them
+      for (property in target) {
+        if (hasOwn.call(target, property) && (notString || !stringPropsRE.test(property))) {
+          c[property] = target[property]
+        }
+      }
+
+      return c
     }
     else {
-      var c, property
       // We have a normal object. If possible, we'll clone the original's
       // prototype (not the original) to get an empty object with the same
       // prototype chain as the original. If just copy the instance properties.
@@ -187,7 +205,7 @@ DeepCopyAlgorithm.prototype = {
     // result instead of descending into it recursively.
     this.cacheResult(source, result)
 
-    // Only DeepCopier.populate() can recursively deep copy.  o, to keep track
+    // Only DeepCopier.populate() can recursively deep copy. So, to keep track
     // of recursion depth, we increment this shared counter before calling it,
     // and decrement it afterwards.
     this.depth++
@@ -255,6 +273,51 @@ deepCopy.register({
   }
 })
 
+// Standard primitive wrapper copier
+deepCopy.register({
+  canCopy: function(source) {
+    return primitiveWrapperTypes[type(source)]
+  }
+
+, create: function(source) {
+    return new source.constructor(source.valueOf())
+  }
+
+, populate: function(deepCopy, source, result) {
+    var notString = type(source) != 'string'
+    for (var key in source) {
+      if (hasOwn.call(source, key) && (notString || !stringPropsRE.test(key))) {
+        result[key] = deepCopy(source[key])
+      }
+    }
+    return result
+  }
+})
+
+// RegExp copier
+deepCopy.register({
+  canCopy: function(source) {
+    return type(source) == 'regexp'
+  }
+
+, create: function(source) {
+    return source
+  }
+
+
+})
+
+// Date copier
+deepCopy.register({
+  canCopy: function(source) {
+    return type(source) == 'date'
+  }
+
+, create: function(source) {
+    return new Date(source)
+  }
+})
+
 // Array copier
 deepCopy.register({
   canCopy: function(source) {
@@ -270,28 +333,6 @@ deepCopy.register({
       result.push(deepCopy(source[i]))
     }
     return result
-  }
-})
-
-// Date copier
-deepCopy.register({
-  canCopy: function(source) {
-    return type(source) == 'date'
-  }
-
-, create: function(source) {
-    return new Date(source)
-  }
-})
-
-// RegExp copier
-deepCopy.register({
-  canCopy: function(source) {
-    return type(source) == 'regexp'
-  }
-
-, create: function(source) {
-    return source
   }
 })
 
