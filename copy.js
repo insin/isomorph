@@ -1,6 +1,7 @@
 'use strict';
 
-var is = require('./is')
+var toString = Object.prototype.toString
+var type = function(obj) { return toString.call(obj).slice(8, -1).toLowerCase() }
 
 /* This file is part of OWL JavaScript Utilities.
 
@@ -256,7 +257,7 @@ deepCopy.register({
 // Array copier
 deepCopy.register({
   canCopy: function(source) {
-    return is.Array(source)
+    return type(source) == 'array'
   }
 
 , create: function(source) {
@@ -274,7 +275,7 @@ deepCopy.register({
 // Date copier
 deepCopy.register({
   canCopy: function(source) {
-    return is.Date(source)
+    return type(source) == 'date'
   }
 
 , create: function(source) {
@@ -285,7 +286,7 @@ deepCopy.register({
 // RegExp copier
 deepCopy.register({
   canCopy: function(source) {
-    return is.RegExp(source)
+    return type(source) == 'regexp'
   }
 
 , create: function(source) {
