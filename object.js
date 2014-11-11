@@ -90,7 +90,7 @@ function get(obj, prop, defaultValue) {
  */
 function pop(obj, prop, defaultValue) {
   if (obj == null) {
-    throw new Error('popProp was given ' + obj)
+    throw new Error('pop was given ' + obj)
   }
   if (hasOwn(obj, prop)) {
     var value = obj[prop]
@@ -98,7 +98,7 @@ function pop(obj, prop, defaultValue) {
     return value
   }
   else if (arguments.length == 2) {
-    throw new Error("popProp was given an object which didn't have an own '" +
+    throw new Error("pop was given an object which didn't have an own '" +
                     prop + "' property, without a default value to return")
   }
   return defaultValue
