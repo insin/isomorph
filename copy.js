@@ -1,5 +1,6 @@
 'use strict';
 
+var hasOwn = Object.prototype.hasOwnProperty
 var toString = Object.prototype.toString
 var type = function(obj) { return toString.call(obj).slice(8, -1).toLowerCase() }
 
@@ -59,7 +60,7 @@ function copy(target) {
         // Give the copy all the instance properties of target. It has the same
         // prototype as target, so inherited properties are already there.
         for (property in target) {
-          if (target.hasOwnProperty(property)) {
+          if (hasOwn.call(target, property)) {
             c[property] = target[property]
           }
         }
@@ -246,7 +247,7 @@ deepCopy.register({
 
 , populate: function(deepCopy, source, result) {
     for (var key in source) {
-      if (source.hasOwnProperty(key)) {
+      if (hasOwn.call(source, key)) {
         result[key] = deepCopy(source[key])
       }
     }
