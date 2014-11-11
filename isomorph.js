@@ -1,8 +1,23 @@
 /**
- * isomorph 0.2.1 - https://github.com/insin/isomorph
+ * isomorph 0.3.0 - https://github.com/insin/isomorph
  * MIT Licensed
  */
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),o.isomorph=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),o.isomorph=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+  is: require('./is')
+, array: require('./array')
+, func: require('./func')
+, object: require('./object')
+, format: require('./format')
+, re: require('./re')
+, querystring: require('./querystring')
+, copy: require('./copy')
+, time: require('./time')
+, url: require('./url')
+}
+},{"./array":2,"./copy":3,"./format":4,"./func":5,"./is":6,"./object":7,"./querystring":8,"./re":9,"./time":10,"./url":11}],2:[function(require,module,exports){
 'use strict';
 
 var is = require('./is')
@@ -34,10 +49,20 @@ module.exports = {
   flatten: flatten
 }
 
-},{"./is":6}],2:[function(require,module,exports){
+},{"./is":6}],3:[function(require,module,exports){
 'use strict';
 
-var is = require('./is')
+var hasOwn = Object.prototype.hasOwnProperty
+var toString = Object.prototype.toString
+var type = function(obj) { return toString.call(obj).slice(8, -1).toLowerCase() }
+
+var primitiveWrapperTypes = {
+  boolean: true
+, number: true
+, string: true
+}
+
+var stringPropsRE = /^(?:\d+|length)$/
 
 /* This file is part of OWL JavaScript Utilities.
 
@@ -72,19 +97,29 @@ function clone(target) {
 
 // Shallow Copy
 function copy(target) {
+  var c, property
   if (typeof target != 'object') {
     // Non-objects have value semantics, so target is already a copy
     return target
   }
   else {
     var value = target.valueOf()
-    if (target != value) {
-      // the object is a standard object wrapper for a native type, say String.
+    if (target == value) {
+      // The object is a standard object wrapper for a native type, say String.
       // we can make a copy by instantiating a new object around the value.
-      return new target.constructor(value)
+      c = new target.constructor(value)
+      var notString = type(target) != 'string'
+
+      // Wrappers can have properties added to them
+      for (property in target) {
+        if (hasOwn.call(target, property) && (notString || !stringPropsRE.test(property))) {
+          c[property] = target[property]
+        }
+      }
+
+      return c
     }
     else {
-      var c, property
       // We have a normal object. If possible, we'll clone the original's
       // prototype (not the original) to get an empty object with the same
       // prototype chain as the original. If just copy the instance properties.
@@ -95,7 +130,7 @@ function copy(target) {
         // Give the copy all the instance properties of target. It has the same
         // prototype as target, so inherited properties are already there.
         for (property in target) {
-          if (target.hasOwnProperty(property)) {
+          if (hasOwn.call(target, property)) {
             c[property] = target[property]
           }
         }
@@ -222,7 +257,7 @@ DeepCopyAlgorithm.prototype = {
     // result instead of descending into it recursively.
     this.cacheResult(source, result)
 
-    // Only DeepCopier.populate() can recursively deep copy.  o, to keep track
+    // Only DeepCopier.populate() can recursively deep copy. So, to keep track
     // of recursion depth, we increment this shared counter before calling it,
     // and decrement it afterwards.
     this.depth++
@@ -282,7 +317,7 @@ deepCopy.register({
 
 , populate: function(deepCopy, source, result) {
     for (var key in source) {
-      if (source.hasOwnProperty(key)) {
+      if (hasOwn.call(source, key)) {
         result[key] = deepCopy(source[key])
       }
     }
@@ -290,10 +325,55 @@ deepCopy.register({
   }
 })
 
+// Standard primitive wrapper copier
+deepCopy.register({
+  canCopy: function(source) {
+    return primitiveWrapperTypes[type(source)]
+  }
+
+, create: function(source) {
+    return new source.constructor(source.valueOf())
+  }
+
+, populate: function(deepCopy, source, result) {
+    var notString = type(source) != 'string'
+    for (var key in source) {
+      if (hasOwn.call(source, key) && (notString || !stringPropsRE.test(key))) {
+        result[key] = deepCopy(source[key])
+      }
+    }
+    return result
+  }
+})
+
+// RegExp copier
+deepCopy.register({
+  canCopy: function(source) {
+    return type(source) == 'regexp'
+  }
+
+, create: function(source) {
+    return source
+  }
+
+
+})
+
+// Date copier
+deepCopy.register({
+  canCopy: function(source) {
+    return type(source) == 'date'
+  }
+
+, create: function(source) {
+    return new Date(source)
+  }
+})
+
 // Array copier
 deepCopy.register({
   canCopy: function(source) {
-    return is.Array(source)
+    return type(source) == 'array'
   }
 
 , create: function(source) {
@@ -308,28 +388,6 @@ deepCopy.register({
   }
 })
 
-// Date copier
-deepCopy.register({
-  canCopy: function(source) {
-    return is.Date(source)
-  }
-
-, create: function(source) {
-    return new Date(source)
-  }
-})
-
-// RegExp copier
-deepCopy.register({
-  canCopy: function(source) {
-    return is.RegExp(source)
-  }
-
-, create: function(source) {
-    return source
-  }
-})
-
 module.exports = {
   DeepCopyAlgorithm: DeepCopyAlgorithm
 , copy: copy
@@ -337,7 +395,7 @@ module.exports = {
 , deepCopy: deepCopy
 }
 
-},{"./is":6}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var slice = Array.prototype.slice
@@ -394,7 +452,7 @@ module.exports = {
 , fileSize: fileSize
 }
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var slice = Array.prototype.slice
@@ -418,22 +476,7 @@ module.exports = {
   bind: bind
 }
 
-},{}],5:[function(require,module,exports){
-'use strict';
-
-module.exports = {
-  is: require('./is')
-, array: require('./array')
-, func: require('./func')
-, object: require('./object')
-, format: require('./format')
-, re: require('./re')
-, querystring: require('./querystring')
-, copy: require('./copy')
-, time: require('./time')
-, url: require('./url')
-}
-},{"./array":1,"./copy":2,"./format":3,"./func":4,"./is":6,"./object":7,"./querystring":8,"./re":9,"./time":10,"./url":11}],6:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var toString = Object.prototype.toString
@@ -511,6 +554,14 @@ module.exports = {
 var hasOwn = (function() {
   var hasOwnProperty = Object.prototype.hasOwnProperty
   return function(obj, prop) { return hasOwnProperty.call(obj, prop) }
+})()
+
+/**
+ * Returns the type of an object as a lowercase string.
+ */
+var type = (function() {
+  var toString = Object.prototype.toString
+  return function(obj) { return toString.call(obj).slice(8, -1).toLowerCase() }
 })()
 
 /**
@@ -594,7 +645,7 @@ function get(obj, prop, defaultValue) {
  */
 function pop(obj, prop, defaultValue) {
   if (obj == null) {
-    throw new Error('popProp was given ' + obj)
+    throw new Error('pop was given ' + obj)
   }
   if (hasOwn(obj, prop)) {
     var value = obj[prop]
@@ -602,7 +653,7 @@ function pop(obj, prop, defaultValue) {
     return value
   }
   else if (arguments.length == 2) {
-    throw new Error("popProp was given an object which didn't have an own '" +
+    throw new Error("pop was given an object which didn't have an own '" +
                     prop + "' property, without a default value to return")
   }
   return defaultValue
@@ -628,6 +679,7 @@ function setDefault(obj, prop, defaultValue) {
 
 module.exports = {
   hasOwn: hasOwn
+, type: type
 , extend: extend
 , inherits: inherits
 , items: items
@@ -1176,6 +1228,5 @@ module.exports = {
 , makeUri: makeUri
 }
 
-},{}]},{},[5])
-(5)
+},{}]},{},[1])(1)
 });

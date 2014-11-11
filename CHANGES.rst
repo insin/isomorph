@@ -1,3 +1,10 @@
+0.3.0 / 2014-11-11
+==================
+
+* ``copy.copy()`` and ``copy.deepCopy()`` now handle primitive wrapper objects
+  and copy over any custom properties added to them
+* Added ``object.type()``
+
 0.2.1 / 2014-02-21
 ==================
 
