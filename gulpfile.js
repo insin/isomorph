@@ -10,7 +10,7 @@ var streamify = require('gulp-streamify')
 var uglify = require('gulp-uglify')
 var gutil = require('gulp-util')
 
-var pkg = require('./package.json');
+var pkg = require('./package.json')
 var srcHeader = '/**\n\
  * isomorph <%= pkg.version %> - https://github.com/insin/isomorph\n\
  * MIT Licensed\n\
